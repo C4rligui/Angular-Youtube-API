@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from "@angular/core";
+import { YoutubeService } from "./services/youtube.service";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,23 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'youtube-api-with-angular';
+
+  videos:any
+
+  @ViewChild('videoName') videoName!: ElementRef;
+
+  constructor(private youtube:YoutubeService) {}
+
+  ngOnInit() {
+  }
+
+  getData() {
+    var videoName = this.videoName.nativeElement.value
+
+    this.youtube.getVideos(videoName).subscribe((data) => {
+      console.log(data)
+      this.videos = data.items
+    })
+  }
+
 }
